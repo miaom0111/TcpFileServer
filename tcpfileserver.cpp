@@ -50,6 +50,13 @@ void TcpFileServer::start()
 
 void TcpFileServer::acceptConnection()
 {
+    tcpServerConnection = tcpServer.nextPendingConnection();
+    connect(tcpServerConnection, SIGNAL(readyRead()),
+            this, SLOT(updateServerProgress()));
+    connect(tcpServerConnection, SIGNAL(error(QAbstractSocket::SocketError)),
+            this, SLOT(displayError(QAbstractSocket::SocketError)));
+    serverStatusLabel->setText(tr("接受連線"));
+    tcpServer.close();
 
 }
 
